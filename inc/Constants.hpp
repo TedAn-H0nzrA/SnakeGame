@@ -4,9 +4,8 @@
 #include <SFML/Graphics.hpp>
 
 namespace Constants{
-    inline sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
-    inline float WIDTH = static_cast<float>(desktop.width) - 100;
-    inline float HEIGHT = static_cast<float>(desktop.height) - 100;
+    inline float WIDTH = 1280;
+    inline float HEIGHT = 720;
     inline constexpr int FPS = 120;
     inline std::string TITLE = "Snake Game";
     inline sf::Color BACKGROUND{30, 30, 40};
@@ -14,7 +13,7 @@ namespace Constants{
     
     // Text manager and display
     inline std::string fontPath = std::string(FONTS_DIR) + "/JetBrainsMono.ttf";
-    inline std::string gameOverText = "Game Over";
+    inline std::string gameOverText = "Game Over Bitch";
     inline constexpr float gameOverSize = 100;
     inline sf::Color gameOverColor{255, 20, 20};
     

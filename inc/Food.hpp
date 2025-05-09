@@ -20,7 +20,7 @@ class Food{
         Food();
 
         void setPosition(float x, float y);
-        void checkCollision(sf::FloatRect& entity);
+        bool checkCollision(sf::FloatRect& entity);
 
         void draw(sf::RenderWindow& window);
 };

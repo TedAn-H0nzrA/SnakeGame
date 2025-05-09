@@ -25,7 +25,7 @@ void Food::setPosition(float x, float y) {
     shape.setPosition(x, y);
 }
 
-void Food::checkCollision(sf::FloatRect& entity) {
+bool Food::checkCollision(sf::FloatRect& entity) {
     auto shapeDim = shape.getGlobalBounds();
 
     if (shapeDim.intersects(entity)) {
@@ -34,7 +34,11 @@ void Food::checkCollision(sf::FloatRect& entity) {
 
         setPosition(gridX * Constants::GRID_SIZE + Constants::GRID_SIZE / 2,
                     gridY * Constants::GRID_SIZE + Constants::GRID_SIZE / 2);
+
+        return true;
     }
+
+    return false;
 }
 
 void Food::draw(sf::RenderWindow& window) {

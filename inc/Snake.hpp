@@ -38,5 +38,6 @@ class Snake{
         void checkCollisionWindow();
         bool getIsColliedWindow() const;
 
+        sf::FloatRect getGlobalBounds() const;
         void draw(sf::RenderWindow& window);
 };

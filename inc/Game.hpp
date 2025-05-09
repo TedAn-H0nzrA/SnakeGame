@@ -12,12 +12,13 @@ class Game{
         TextManager gameOverText;
         TextManager scoreText;
 
+        int score;
+
         // Entity
         Food food;
         Snake snake;
 
         bool snakeColliedWindow;
-
         bool isGameOver;
 
     public: 

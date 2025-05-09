@@ -4,14 +4,15 @@
 Game::Game(): snakeColliedWindow(false),
                 gameOverText(Constants::gameOverSize, Constants::gameOverColor),
                 scoreText(Constants::scoreSize, Constants::scoreColor),
-                isGameOver(false)
+                isGameOver(false),
+                score(0)
 {
     window.create(sf::VideoMode(Constants::WIDTH, Constants::HEIGHT), Constants::TITLE, sf::Style::Default);
     window.setFramerateLimit(Constants::FPS);
 
     gameOverText.setString(Constants::gameOverText);
     gameOverText.setPosition(Constants::WIDTH / 2, Constants::HEIGHT / 2);
-    scoreText.setString(Constants::scoreText);
+    scoreText.setString(Constants::scoreText + std::to_string(score));
     scoreText.setPosition(Constants::WIDTH / 2, 10);
 }
 
@@ -24,6 +25,9 @@ void Game::manageEvent(sf::Event& event) {
             if (event.key.code == sf::Keyboard::Down) snake.setDirection(Direction::Down);
             if (event.key.code == sf::Keyboard::Right) snake.setDirection(Direction::Right);
             if (event.key.code == sf::Keyboard::Left) snake.setDirection(Direction::Left);
+
+            // Debug gameOver
+            if (event.key.code == sf::Keyboard::A) isGameOver = true;
         }
     }
 
@@ -59,6 +63,14 @@ void Game::update() {
     if (accumulatedTime >= moveInterval) {
         snake.move();
         accumulatedTime = 0;
+    }
+
+    // Gestion des collisions
+    // Food et Snake
+    auto snakeBounds = snake.getGlobalBounds();
+    if (food.checkCollision(snakeBounds)) {
+        score++;
+        scoreText.setString(Constants::scoreText + std::to_string(score));
     }
 }
 

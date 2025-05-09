@@ -1,18 +1,22 @@
 #include "Snake.hpp"
 #include "Constants.hpp"
+#include <iostream>
 
 Snake::Snake(): segmentSize(Constants::GRID_SIZE), 
                 speed(Constants::GRID_SIZE),
                 isColliedWindow(false),
-                currentDirection(Direction::Up),
+                currentDirection(Direction::Right),
                 dirVertical(true),
                 dirHorizontal(false)
 {
     // Snake headShape
     headShape.setSize(sf::Vector2f(segmentSize, segmentSize));
     headShape.setFillColor(Constants::S_headColor);
-    headShape.setPosition(Constants::WIDTH / 2, Constants::HEIGHT / 2);
 
+    int gridCols = Constants::WIDTH / Constants::GRID_SIZE;
+    int gridRows = Constants::HEIGHT / Constants::GRID_SIZE;
+    headShape.setPosition(Constants::GRID_SIZE * (gridCols/ 2), 
+                            Constants::GRID_SIZE * (gridRows / 2));
 }
 
 
@@ -47,7 +51,8 @@ void Snake::updateVelocity() {
 void Snake::move() {
     updateVelocity();
     checkCollisionWindow();
-    headShape.move(velocity);
+
+    if (!isColliedWindow) headShape.move(velocity);
 }
 
 void Snake::setDirection(Direction dir) {
@@ -71,11 +76,13 @@ void Snake::setDirection(Direction dir) {
 }
 
 void Snake::checkCollisionWindow() {
-    auto headShapeDim = headShape.getGlobalBounds();
+    sf::Vector2f nextPos = headShape.getPosition() + velocity;
+    float maxX = Constants::WIDTH - segmentSize;
+    float maxY = Constants::HEIGHT - segmentSize;
 
-    if (headShapeDim.left <= 0 || (headShapeDim.left + headShapeDim.width) >= Constants::WIDTH) {
-        isColliedWindow = true;
-    } else if (headShapeDim.top <= 0 || (headShapeDim.top + headShapeDim.height) >= Constants::HEIGHT) {
+    if (nextPos.x < 0 || nextPos.x > maxX || nextPos.y < 0 || nextPos.y > maxY) {
+        std::cout << "Position snake: " << headShape.getPosition().x << " " << headShape.getPosition().y << std::endl;
+        std::cout << "Taille écran: " << Constants::WIDTH << " " << Constants::HEIGHT << std::endl;
         isColliedWindow = true;
     }
 }
@@ -84,6 +91,9 @@ bool Snake::getIsColliedWindow() const {
     return isColliedWindow;
 }
 
+sf::FloatRect Snake::getGlobalBounds() const {
+    return headShape.getGlobalBounds();
+}
 
 void Snake::draw(sf::RenderWindow& window) {
     window.draw(headShape);
