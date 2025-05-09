@@ -28,6 +28,7 @@ class Game{
         void draw();
 
         void update();
+        void reset();
 
         void run();
 };

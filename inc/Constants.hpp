@@ -28,9 +28,10 @@ namespace Constants{
     // Snake
     inline sf::Color S_headColor{100, 255, 100};
     inline sf::Color S_bodyColor{50, 180, 50};
-    inline constexpr float S_edge = F_radius;
+    inline constexpr float S_headEdge = F_radius;
+    inline constexpr float S_bodyEdge = (S_headEdge - 2) * 2;
     inline constexpr float S_speed = 200;
     
     // Grille
-    const int GRID_SIZE = S_edge * 2;
+    const int GRID_SIZE = S_headEdge * 2;
 };

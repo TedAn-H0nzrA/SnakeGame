@@ -16,6 +16,7 @@ Game::Game(): snakeColliedWindow(false),
     scoreText.setPosition(Constants::WIDTH / 2, 10);
 }
 
+
 void Game::manageEvent(sf::Event& event) {
     while (window.pollEvent(event)) {
         if (event.type == sf::Event::Closed) window.close();
@@ -25,18 +26,24 @@ void Game::manageEvent(sf::Event& event) {
             if (event.key.code == sf::Keyboard::Down) snake.setDirection(Direction::Down);
             if (event.key.code == sf::Keyboard::Right) snake.setDirection(Direction::Right);
             if (event.key.code == sf::Keyboard::Left) snake.setDirection(Direction::Left);
-
+            
             // Debug gameOver
-            if (event.key.code == sf::Keyboard::A) isGameOver = true;
+            if (isGameOver && event.key.code == sf::Keyboard::Space) reset();
         }
     }
-
-    snakeColliedWindow = snake.getIsColliedWindow();
+    
+    snakeColliedWindow = snake.getisCollied();
     if (snakeColliedWindow) {
         isGameOver = true;
     }
 }
 
+void Game::reset() {
+    score = 0;
+    isGameOver = false;
+    snake.reset();
+    update();
+}
 void Game::draw() {
     window.clear(Constants::BACKGROUND);
 
@@ -69,6 +76,7 @@ void Game::update() {
     // Food et Snake
     auto snakeBounds = snake.getGlobalBounds();
     if (food.checkCollision(snakeBounds)) {
+        snake.grow();
         score++;
         scoreText.setString(Constants::scoreText + std::to_string(score));
     }

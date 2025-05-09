@@ -13,10 +13,9 @@ enum class Direction{
 class Snake{
     private:
         sf::RectangleShape headShape;
-        sf::RectangleShape bodyShape;
 
         float segmentSize; // Taille de chaque segment
-        std::vector<sf::Vector2f> shape;
+        std::vector<sf::RectangleShape> bodyShape;
         Direction currentDirection;
 
         bool dirVertical;
@@ -25,7 +24,7 @@ class Snake{
         float speed;
         sf::Vector2f velocity;
 
-        bool isColliedWindow;
+        bool isCollied;
 
     public:
         Snake();
@@ -36,7 +35,13 @@ class Snake{
 
 
         void checkCollisionWindow();
-        bool getIsColliedWindow() const;
+        bool getisCollied() const;
+
+        void checkCollisionBody();
+
+        void grow();
+
+        void reset();
 
         sf::FloatRect getGlobalBounds() const;
         void draw(sf::RenderWindow& window);
