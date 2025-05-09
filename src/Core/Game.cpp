@@ -24,16 +24,12 @@ Game::Game(): snakeCollied(false),
 void Game::manageEvent(sf::Event& event) {
     while (window.pollEvent(event)) {
         if (event.type == sf::Event::Closed) window.close();
-
-        if (event.type == sf::Event::KeyPressed) {
-            if (event.key.code == sf::Keyboard::Up) snake.setDirection(Direction::Up);
-            if (event.key.code == sf::Keyboard::Down) snake.setDirection(Direction::Down);
-            if (event.key.code == sf::Keyboard::Right) snake.setDirection(Direction::Right);
-            if (event.key.code == sf::Keyboard::Left) snake.setDirection(Direction::Left);
-            
-            // Debug gameOver
-            if (isGameOver && event.key.code == sf::Keyboard::Space) reset();
-        }
+        
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) snake.setDirection(Direction::Up);
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) snake.setDirection(Direction::Down);
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) snake.setDirection(Direction::Right);
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) snake.setDirection(Direction::Left);
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) reset();
     }
     
     snakeCollied = snake.getIsCollied();
