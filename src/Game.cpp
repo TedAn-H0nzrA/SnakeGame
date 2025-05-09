@@ -3,9 +3,11 @@
 
 Game::Game(): snakeColliedWindow(false),
                 gameOverText(Constants::gameOverSize, Constants::gameOverColor),
-                scoreText(Constants::scoreSize, Constants::scoreColor)
+                scoreText(Constants::scoreSize, Constants::scoreColor),
+                isGameOver(false)
 {
-    window.create(Constants::desktop, Constants::TITLE, sf::Style::Default);
+    window.create(sf::VideoMode(Constants::WIDTH, Constants::HEIGHT), Constants::TITLE, sf::Style::Default);
+    window.setFramerateLimit(Constants::FPS);
 
     gameOverText.setString(Constants::gameOverText);
     gameOverText.setPosition(Constants::WIDTH / 2, Constants::HEIGHT / 2);
@@ -16,12 +18,19 @@ Game::Game(): snakeColliedWindow(false),
 void Game::manageEvent(sf::Event& event) {
     while (window.pollEvent(event)) {
         if (event.type == sf::Event::Closed) window.close();
+
+        if (event.type == sf::Event::KeyPressed) {
+            if (event.key.code == sf::Keyboard::Up) snake.setDirection(Direction::Up);
+            if (event.key.code == sf::Keyboard::Down) snake.setDirection(Direction::Down);
+            if (event.key.code == sf::Keyboard::Right) snake.setDirection(Direction::Right);
+            if (event.key.code == sf::Keyboard::Left) snake.setDirection(Direction::Left);
+        }
     }
 
-    // snakeColliedWindow = snake.getIsColliedWindow();
-    // if (snakeColliedWindow) {
-    //     window.close();
-    // }
+    snakeColliedWindow = snake.getIsColliedWindow();
+    if (snakeColliedWindow) {
+        isGameOver = true;
+    }
 }
 
 void Game::draw() {
@@ -30,23 +39,36 @@ void Game::draw() {
     // Drawing entity
     food.draw(window);
     snake.draw(window);
-
-    gameOverText.draw(window);
     scoreText.draw(window);
+
+    if (isGameOver) gameOverText.draw(window);
 
     window.display();
 }
 
 void Game::update() {
     float deltaTime = clock.restart().asSeconds();
-    snake.move(deltaTime);
+    
+    // Ne déplacez le serpent que lorsque suffisamment de temps s'est écoulé
+    static float accumulatedTime = 0;
+    accumulatedTime += deltaTime;
+    
+    // Déplacer le serpent à un rythme constant basé sur sa vitesse
+    float moveInterval = 1.0f / (Constants::S_speed / Constants::GRID_SIZE);
+    
+    if (accumulatedTime >= moveInterval) {
+        snake.move();
+        accumulatedTime = 0;
+    }
 }
 
 void Game::run() {
     while (window.isOpen()) {
         sf::Event event;
         manageEvent(event);
-        update();
+        
+        if (!isGameOver) update();
+
         draw();
     }
 }

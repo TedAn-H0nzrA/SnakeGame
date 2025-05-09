@@ -9,10 +9,16 @@ Food::Food() : radius(Constants::F_radius)
 
     // Initialisation des random
     gen.seed(rd());
-    distX = std::uniform_real_distribution<float>(radius, Constants::WIDTH - radius);
-    distY = std::uniform_real_distribution<float>(radius, Constants::HEIGHT - radius);
+    maxGridX = Constants::WIDTH / Constants::GRID_SIZE - 1;
+    maxGridY = Constants::HEIGHT / Constants::GRID_SIZE - 1;
+    distX = std::uniform_int_distribution<int>(0, maxGridX);
+    distY = std::uniform_int_distribution<int>(0, maxGridY);
 
-    setPosition(distX(gen), distY(gen));
+    int gridX = distX(gen);
+    int gridY = distY(gen);
+
+    setPosition(gridX * Constants::GRID_SIZE + Constants::GRID_SIZE / 2,
+                gridY * Constants::GRID_SIZE + Constants::GRID_SIZE / 2);
 }
 
 void Food::setPosition(float x, float y) {
@@ -23,7 +29,11 @@ void Food::checkCollision(sf::FloatRect& entity) {
     auto shapeDim = shape.getGlobalBounds();
 
     if (shapeDim.intersects(entity)) {
-        setPosition(distX(gen), distY(gen));
+        int gridX = distX(gen);
+        int gridY = distY(gen);
+
+        setPosition(gridX * Constants::GRID_SIZE + Constants::GRID_SIZE / 2,
+                    gridY * Constants::GRID_SIZE + Constants::GRID_SIZE / 2);
     }
 }
 

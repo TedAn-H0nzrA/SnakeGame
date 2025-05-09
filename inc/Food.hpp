@@ -11,8 +11,10 @@ class Food{
         // Intilialisation random
         std::random_device rd;
         std::mt19937 gen;
-        std::uniform_real_distribution<float> distX;
-        std::uniform_real_distribution<float> distY;
+        int maxGridX;
+        int maxGridY;
+        std::uniform_int_distribution<int> distX;
+        std::uniform_int_distribution<int> distY;
 
     public:
         Food();

@@ -17,6 +17,10 @@ class Snake{
 
         float segmentSize; // Taille de chaque segment
         std::vector<sf::Vector2f> shape;
+        Direction currentDirection;
+
+        bool dirVertical;
+        bool dirHorizontal;
 
         float speed;
         sf::Vector2f velocity;
@@ -27,7 +31,9 @@ class Snake{
         Snake();
 
         void updateVelocity();
-        void move(float deltaTime);
+        void move();
+        void setDirection(Direction dir);
+
 
         void checkCollisionWindow();
         bool getIsColliedWindow() const;

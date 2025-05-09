@@ -18,6 +18,8 @@ class Game{
 
         bool snakeColliedWindow;
 
+        bool isGameOver;
+
     public: 
         Game();
 
