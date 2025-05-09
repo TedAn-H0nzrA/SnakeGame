@@ -14,7 +14,7 @@ class TextManager{
         void setOrigin();
 
     public:
-        TextManager(float textSize, sf::Color& textColor);
+        TextManager(float textSize, sf::Color textColor);
         void setString(const std::string& str);
 
         void setPosition(float x, float y);

@@ -34,15 +34,15 @@ class Snake{
         void setDirection(Direction dir);
 
 
-        void checkCollisionWindow();
-        bool getisCollied() const;
+        void checkCollision();
+        bool getIsCollied() const;
 
-        void checkCollisionBody();
 
         void grow();
 
         void reset();
 
+        sf::Vector2f getPosition() const;
         sf::FloatRect getGlobalBounds() const;
         void draw(sf::RenderWindow& window);
 };

@@ -11,6 +11,7 @@ class Game{
         sf::Clock clock;
         TextManager gameOverText;
         TextManager scoreText;
+        TextManager snakePosText;
 
         int score;
 
@@ -18,7 +19,7 @@ class Game{
         Food food;
         Snake snake;
 
-        bool snakeColliedWindow;
+        bool snakeCollied;
         bool isGameOver;
 
     public: 

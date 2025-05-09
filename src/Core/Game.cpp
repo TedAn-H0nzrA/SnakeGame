@@ -1,9 +1,10 @@
 #include "Game.hpp"
 #include "Constants.hpp"
 
-Game::Game(): snakeColliedWindow(false),
+Game::Game(): snakeCollied(false),
                 gameOverText(Constants::gameOverSize, Constants::gameOverColor),
                 scoreText(Constants::scoreSize, Constants::scoreColor),
+                snakePosText(Constants::snakePosInfoSize, Constants::snakePosInfoColor),
                 isGameOver(false),
                 score(0)
 {
@@ -14,6 +15,9 @@ Game::Game(): snakeColliedWindow(false),
     gameOverText.setPosition(Constants::WIDTH / 2, Constants::HEIGHT / 2);
     scoreText.setString(Constants::scoreText + std::to_string(score));
     scoreText.setPosition(Constants::WIDTH / 2, 10);
+
+    snakePosText.setString(Constants::snakePosInfo);
+    snakePosText.setPosition(Constants::WIDTH / 2, Constants::HEIGHT - 10);
 }
 
 
@@ -32,8 +36,8 @@ void Game::manageEvent(sf::Event& event) {
         }
     }
     
-    snakeColliedWindow = snake.getisCollied();
-    if (snakeColliedWindow) {
+    snakeCollied = snake.getIsCollied();
+    if (snakeCollied) {
         isGameOver = true;
     }
 }
@@ -50,6 +54,7 @@ void Game::draw() {
     // Drawing entity
     food.draw(window);
     snake.draw(window);
+    snakePosText.draw(window);
     scoreText.draw(window);
 
     if (isGameOver) gameOverText.draw(window);
@@ -80,6 +85,11 @@ void Game::update() {
         score++;
         scoreText.setString(Constants::scoreText + std::to_string(score));
     }
+
+    // Snake position
+    int posX = snake.getPosition().x;
+    int posY = snake.getPosition().y;
+    snakePosText.setString(Constants::snakePosInfo + std::to_string(posX) + " | " + std::to_string(posY));
 }
 
 void Game::run() {

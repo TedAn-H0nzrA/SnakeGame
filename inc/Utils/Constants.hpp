@@ -13,9 +13,13 @@ namespace Constants{
     
     // Text manager and display
     inline std::string fontPath = std::string(FONTS_DIR) + "/JetBrainsMono.ttf";
-    inline std::string gameOverText = "Game Over Bitch";
+    inline std::string gameOverText = "Game Over";
     inline constexpr float gameOverSize = 100;
     inline sf::Color gameOverColor{255, 20, 20};
+
+    inline std::string snakePosInfo = "Snake Position : ";
+    inline constexpr float snakePosInfoSize = 10;
+    inline sf::Color snakePosInfoColor {sf::Color::White};
     
     inline std::string scoreText = "Score : ";
     inline constexpr float scoreSize = 20;
@@ -28,10 +32,9 @@ namespace Constants{
     // Snake
     inline sf::Color S_headColor{100, 255, 100};
     inline sf::Color S_bodyColor{50, 180, 50};
-    inline constexpr float S_headEdge = F_radius;
-    inline constexpr float S_bodyEdge = (S_headEdge - 2) * 2;
+    inline constexpr float S_edge = F_radius;
     inline constexpr float S_speed = 200;
     
     // Grille
-    const int GRID_SIZE = S_headEdge * 2;
+    const int GRID_SIZE = S_edge * 2;
 };

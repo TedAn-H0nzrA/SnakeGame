@@ -2,7 +2,7 @@
 #include "LoadRessource.hpp"
 #include "Constants.hpp"
 
-TextManager::TextManager(float textSize, sf::Color& textColor): font(LoadRessource::loadFont(Constants::fontPath)),
+TextManager::TextManager(float textSize, sf::Color textColor): font(LoadRessource::loadFont(Constants::fontPath)),
                                             textSize(textSize),
                                             textColor(textColor)
 {

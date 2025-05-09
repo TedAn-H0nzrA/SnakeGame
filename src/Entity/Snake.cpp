@@ -12,14 +12,12 @@ Snake::Snake(): segmentSize(Constants::GRID_SIZE),
     // Snake headShape
     headShape.setSize(sf::Vector2f(segmentSize, segmentSize));
     headShape.setFillColor(Constants::S_headColor);
-    headShape.setOrigin(segmentSize / 2, segmentSize / 2);
 
     int gridCols = Constants::WIDTH / Constants::GRID_SIZE;
     int gridRows = Constants::HEIGHT / Constants::GRID_SIZE;
     headShape.setPosition(Constants::GRID_SIZE * (gridCols / 2), 
                             Constants::GRID_SIZE * (gridRows / 2));
 }
-
 
 
 void Snake::updateVelocity() {
@@ -62,16 +60,14 @@ void Snake::move() {
         }
 
         headShape.move(velocity);
-        checkCollisionWindow();
-        checkCollisionBody();
+        checkCollision();
     }
 }
 
 void Snake::grow() {
     sf::RectangleShape newBodySegment;
-    newBodySegment.setSize(sf::Vector2f(Constants::S_bodyEdge, Constants::S_bodyEdge));
+    newBodySegment.setSize(sf::Vector2f(segmentSize, segmentSize));
     newBodySegment.setFillColor(Constants::S_bodyColor);
-    newBodySegment.setOrigin(Constants::S_bodyEdge / 2, Constants::S_bodyEdge / 2);
 
     if (bodyShape.empty()) {
         newBodySegment.setPosition(headShape.getPosition());
@@ -102,28 +98,24 @@ void Snake::setDirection(Direction dir) {
     }
 }
 
-void Snake::checkCollisionWindow() {
+void Snake::checkCollision() {
     sf::Vector2f currentPos = headShape.getPosition();
-    float halfSize = segmentSize / 2;
 
-    if (currentPos.x - halfSize <= 0 || currentPos.x + halfSize >= Constants::WIDTH ||
-        currentPos.y - halfSize <= 0 || currentPos.y + halfSize >= Constants::HEIGHT) {
-        std::cout << "Position snake: " << headShape.getPosition().x << " " << headShape.getPosition().y << std::endl;
-        std::cout << "Taille écran: " << Constants::WIDTH << " " << Constants::HEIGHT << std::endl;
+    if (currentPos.x <= 0 || currentPos.x + segmentSize >= Constants::WIDTH ||
+        currentPos.y <= 0 || currentPos.y + segmentSize >= Constants::HEIGHT) {
         isCollied = true;
     }
-}
-
-bool Snake::getisCollied() const {
-    return isCollied;
-}
-
-void Snake::checkCollisionBody() {
+    
+    // Collision Body
     for (auto&& segment : bodyShape) {
         if (segment.getGlobalBounds().intersects(headShape.getGlobalBounds())){
             isCollied = true;
         }
     }
+}
+
+bool Snake::getIsCollied() const {
+    return isCollied;
 }
 
 sf::FloatRect Snake::getGlobalBounds() const {
@@ -136,6 +128,10 @@ void Snake::reset() {
     int gridRows = Constants::HEIGHT / Constants::GRID_SIZE;
     headShape.setPosition(Constants::GRID_SIZE * (gridCols / 2), 
                             Constants::GRID_SIZE * (gridRows / 2));
+}
+
+sf::Vector2f Snake::getPosition() const {
+    return headShape.getPosition();
 }
 
 void Snake::draw(sf::RenderWindow& window) {

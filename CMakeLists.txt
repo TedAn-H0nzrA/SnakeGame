@@ -12,7 +12,9 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/out)
 
 # Fichiers sources
 file(GLOB_RECURSE SOURCES
-    "${SRC_DIR}/*.cpp"
+    "${SRC_DIR}/Entity/*.cpp"
+    "${SRC_DIR}/Core/*.cpp"
+    "${SRC_DIR}/Utils/*.cpp"
 )
 
 # Création de l'exécutable
@@ -27,7 +29,9 @@ file(COPY ${FONTS_DIR} DESTINATION ${CMAKE_BINARY_DIR})
 
 # Dossiers d'include
 target_include_directories(${PROJECT_NAME} PRIVATE
-    ${INC_DIR}
+    ${INC_DIR}/Core
+    ${INC_DIR}/Entity
+    ${INC_DIR}/Utils
 )
 
 # Lien avec SFML
