@@ -11,8 +11,8 @@ Food::Food() : radius(Constants::F_radius)
     gen.seed(rd());
     maxGridX = Constants::WIDTH / Constants::GRID_SIZE - 1;
     maxGridY = Constants::HEIGHT / Constants::GRID_SIZE - 1;
-    distX = std::uniform_int_distribution<int>(0, maxGridX);
-    distY = std::uniform_int_distribution<int>(0, maxGridY);
+    distX = std::uniform_int_distribution<int>(Constants::F_radius, maxGridX - Constants::F_radius);
+    distY = std::uniform_int_distribution<int>(Constants::F_radius, maxGridY - Constants::F_radius);
 
     int gridX = distX(gen);
     int gridY = distY(gen);
@@ -39,6 +39,18 @@ bool Food::checkCollision(sf::FloatRect& entity) {
     }
 
     return false;
+}
+
+void Food::reset() {
+    int gridX = distX(gen);
+    int gridY = distY(gen);
+
+    setPosition(gridX * Constants::GRID_SIZE + Constants::GRID_SIZE / 2,
+                gridY * Constants::GRID_SIZE + Constants::GRID_SIZE / 2);
+}
+
+sf::Vector2f Food::getPosition() const {
+    return shape.getPosition();
 }
 
 void Food::draw(sf::RenderWindow& window) {

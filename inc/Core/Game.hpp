@@ -1,9 +1,11 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <memory>
 #include "Food.hpp"
 #include "Snake.hpp"
 #include "TextManager.hpp"
+#include "BruteForce.hpp"
 
 class Game{
     private:
@@ -17,11 +19,14 @@ class Game{
         float accumulatedTime;
 
         // Entity
-        Food food;
-        Snake snake;
+        std::shared_ptr<Snake> snake;
+        std::shared_ptr<Food> food;
 
         bool snakeCollied;
         bool isGameOver;
+
+        // Ai
+        BruteForce ai_bruteForce;
 
     public: 
         Game();

@@ -22,5 +22,7 @@ class Food{
         void setPosition(float x, float y);
         bool checkCollision(sf::FloatRect& entity);
 
+        void reset();
+        sf::Vector2f getPosition() const;
         void draw(sf::RenderWindow& window);
 };

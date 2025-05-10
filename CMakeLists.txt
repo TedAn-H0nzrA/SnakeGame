@@ -15,6 +15,7 @@ file(GLOB_RECURSE SOURCES
     "${SRC_DIR}/Entity/*.cpp"
     "${SRC_DIR}/Core/*.cpp"
     "${SRC_DIR}/Utils/*.cpp"
+    "${SRC_DIR}/AI/*.cpp"
 )
 
 # Création de l'exécutable
@@ -32,6 +33,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE
     ${INC_DIR}/Core
     ${INC_DIR}/Entity
     ${INC_DIR}/Utils
+    ${INC_DIR}/AI
 )
 
 # Lien avec SFML
