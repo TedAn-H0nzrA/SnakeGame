@@ -101,8 +101,8 @@ void Snake::setDirection(Direction dir) {
 void Snake::checkCollision() {
     sf::Vector2f currentPos = headShape.getPosition();
 
-    if (currentPos.x <= 0 || currentPos.x + segmentSize >= Constants::WIDTH ||
-        currentPos.y <= 0 || currentPos.y + segmentSize >= Constants::HEIGHT) {
+    if (currentPos.x < 0 || currentPos.x + segmentSize > Constants::WIDTH ||
+        currentPos.y < 0 || currentPos.y + segmentSize > Constants::HEIGHT) {
         isCollied = true;
     }
     
