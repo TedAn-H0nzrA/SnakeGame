@@ -13,7 +13,8 @@ Game::Game(): snakeCollied(false),
                 accumulatedTime(0),
                 snake(std::make_shared<Snake>()),
                 food(std::make_shared<Food>()),
-                ai_bruteForce(snake, food, 3),
+                searchDepth(3),
+                ai_bruteForce(snake, food, searchDepth),
                 isAI_BF(false)
 {
     window.create(sf::VideoMode(Constants::WIDTH, Constants::HEIGHT), Constants::TITLE, sf::Style::Default);
@@ -83,9 +84,15 @@ void Game::reset() {
     snake = std::make_shared<Snake>();
     food = std::make_shared<Food>();
 
+    ai_bruteForce = BruteForce(snake, food, searchDepth);
+
     scoreText.setString(Constants::scoreText + std::to_string(score));
     snakePosText.setString(Constants::snakePosInfo);
     accumulatedTime = 0;
+
+    isAI_BF = false;
+    isUser = true;
+    isStarted = false;
 }
 void Game::draw() {
     window.clear(Constants::BACKGROUND);

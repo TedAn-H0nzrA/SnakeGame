@@ -29,6 +29,7 @@ class Game{
 
         // Ai
         BruteForce ai_bruteForce;
+        int searchDepth;
         bool isAI_BF;
 
     public: 
