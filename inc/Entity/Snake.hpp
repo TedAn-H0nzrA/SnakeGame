@@ -28,6 +28,7 @@ class Snake{
 
     public:
         Snake();
+        Snake(const Snake& other);
 
         void updateVelocity();
         void move();
@@ -44,5 +45,7 @@ class Snake{
 
         sf::Vector2f getPosition() const;
         sf::FloatRect getGlobalBounds() const;
+        Direction getDirection() const;
+
         void draw(sf::RenderWindow& window);
 };

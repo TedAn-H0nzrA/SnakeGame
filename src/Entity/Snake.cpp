@@ -19,6 +19,17 @@ Snake::Snake(): segmentSize(Constants::GRID_SIZE),
                             Constants::GRID_SIZE * (gridRows / 2));
 }
 
+Snake::Snake(const Snake& other): segmentSize(other.segmentSize),
+                                    speed(other.speed),
+                                    isCollied(other.isCollied),
+                                    currentDirection(other.currentDirection),
+                                    dirHorizontal(other.dirHorizontal),
+                                    dirVertical(other.dirVertical),
+                                    velocity(other.velocity),
+                                    bodyShape(other.bodyShape)
+{
+    headShape = other.headShape;
+}
 
 void Snake::updateVelocity() {
     switch (currentDirection) {
@@ -137,6 +148,10 @@ void Snake::reset() {
 
 sf::Vector2f Snake::getPosition() const {
     return headShape.getPosition();
+}
+
+Direction Snake::getDirection() const {
+    return currentDirection;
 }
 
 void Snake::draw(sf::RenderWindow& window) {

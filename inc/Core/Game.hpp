@@ -23,16 +23,21 @@ class Game{
         std::shared_ptr<Food> food;
 
         bool snakeCollied;
+        bool isStarted;
         bool isGameOver;
+        bool isUser;
 
         // Ai
         BruteForce ai_bruteForce;
+        bool isAI_BF;
 
     public: 
         Game();
 
         void manageEvent(sf::Event& events); 
         void draw();
+
+        void runBruteForce();
 
         void update();
         void reset();

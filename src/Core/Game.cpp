@@ -1,16 +1,20 @@
 #include "Game.hpp"
 #include "Constants.hpp"
+#include <iostream>
 
 Game::Game(): snakeCollied(false),
                 gameOverText(Constants::gameOverSize, Constants::gameOverColor),
                 scoreText(Constants::scoreSize, Constants::scoreColor),
                 snakePosText(Constants::snakePosInfoSize, Constants::snakePosInfoColor),
+                isStarted(false),
                 isGameOver(false),
+                isUser(true),
                 score(0), 
                 accumulatedTime(0),
                 snake(std::make_shared<Snake>()),
                 food(std::make_shared<Food>()),
-                ai_bruteForce(snake, food)
+                ai_bruteForce(snake, food, 3),
+                isAI_BF(false)
 {
     window.create(sf::VideoMode(Constants::WIDTH, Constants::HEIGHT), Constants::TITLE, sf::Style::Default);
     window.setFramerateLimit(Constants::FPS);
@@ -24,15 +28,42 @@ Game::Game(): snakeCollied(false),
     snakePosText.setPosition(Constants::WIDTH / 2, Constants::HEIGHT - 10);
 }
 
+void Game::runBruteForce() {
+    Direction bestMove = ai_bruteForce.findBestMove();
+    snake->setDirection(bestMove);
+}
 
 void Game::manageEvent(sf::Event& event) {
     while (window.pollEvent(event)) {
         if (event.type == sf::Event::Closed) window.close();
         
+        // AI & User & Play & Pause
+        if (event.type == sf::Event::KeyPressed) {
+            if (event.key.code == sf::Keyboard::Enter) {
+                isStarted = true;
+            }
+
+            if (event.key.code == sf::Keyboard::U) {
+                std::cout << "Mode Utilisateur\n";
+                isAI_BF = false;
+                isUser = true;
+            }
+            
+            // AI
+            // BruteForce
+            if (event.key.code == sf::Keyboard::B) {
+                std::cout << "BruteForce Algorithme\n";
+                isAI_BF = true;
+                isUser = false;
+            }
+        }
+        
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) snake->setDirection(Direction::Up);
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) snake->setDirection(Direction::Down);
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) snake->setDirection(Direction::Right);
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) snake->setDirection(Direction::Left);
+
+        // Reset
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) reset();
     }
     
@@ -80,6 +111,9 @@ void Game::update() {
     float moveInterval = 1.0f / (Constants::S_speed / Constants::GRID_SIZE);
     
     if (accumulatedTime >= moveInterval) {
+        if (isAI_BF) {
+            runBruteForce();
+        }
         snake->move();
         accumulatedTime = 0;
     }
@@ -104,8 +138,8 @@ void Game::run() {
         sf::Event event;
         manageEvent(event);
         
-        if (!isGameOver) update();
-
+        if (!isGameOver && isStarted) update();
+        
         draw();
     }
 }
