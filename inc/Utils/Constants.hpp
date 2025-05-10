@@ -33,7 +33,7 @@ namespace Constants{
     inline sf::Color S_headColor{100, 255, 100};
     inline sf::Color S_bodyColor{50, 180, 50};
     inline constexpr float S_edge = F_radius;
-    inline constexpr float S_speed = 200;
+    inline constexpr float S_speed = 300;
     
     // Grille
     const int GRID_SIZE = S_edge * 2;

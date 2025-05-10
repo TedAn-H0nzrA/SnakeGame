@@ -45,8 +45,13 @@ void Game::manageEvent(sf::Event& event) {
 void Game::reset() {
     score = 0;
     isGameOver = false;
+
     snake.reset();
     food.reset();
+    // Nouvelle instance
+    snake = std::make_shared<Snake>();
+    food = std::make_shared<Food>();
+
     scoreText.setString(Constants::scoreText + std::to_string(score));
     snakePosText.setString(Constants::snakePosInfo);
     accumulatedTime = 0;

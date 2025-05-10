@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 
+set(CMAKE_BUILD_TYPE Debug)
+
 project(Snake_Game)
 
 # Répertoires
@@ -17,6 +19,8 @@ file(GLOB_RECURSE SOURCES
     "${SRC_DIR}/Utils/*.cpp"
     "${SRC_DIR}/AI/*.cpp"
 )
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")
 
 # Création de l'exécutable
 add_executable(${PROJECT_NAME} ${SOURCES})
