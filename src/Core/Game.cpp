@@ -6,7 +6,8 @@ Game::Game(): snakeCollied(false),
                 scoreText(Constants::scoreSize, Constants::scoreColor),
                 snakePosText(Constants::snakePosInfoSize, Constants::snakePosInfoColor),
                 isGameOver(false),
-                score(0)
+                score(0), 
+                accumulatedTime(0)
 {
     window.create(sf::VideoMode(Constants::WIDTH, Constants::HEIGHT), Constants::TITLE, sf::Style::Default);
     window.setFramerateLimit(Constants::FPS);
@@ -42,7 +43,9 @@ void Game::reset() {
     score = 0;
     isGameOver = false;
     snake.reset();
-    update();
+    scoreText.setString(Constants::scoreText + std::to_string(score));
+    snakePosText.setString(Constants::snakePosInfo);
+    accumulatedTime = 0;
 }
 void Game::draw() {
     window.clear(Constants::BACKGROUND);
@@ -62,7 +65,6 @@ void Game::update() {
     float deltaTime = clock.restart().asSeconds();
     
     // Ne déplacez le serpent que lorsque suffisamment de temps s'est écoulé
-    static float accumulatedTime = 0;
     accumulatedTime += deltaTime;
     
     // Déplacer le serpent à un rythme constant basé sur sa vitesse

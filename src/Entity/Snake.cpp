@@ -123,7 +123,12 @@ sf::FloatRect Snake::getGlobalBounds() const {
 }
 
 void Snake::reset() {
+    isCollied = false;
+    velocity = {0, -speed};
+    dirVertical = true;
+    dirHorizontal = false;
     bodyShape.clear();
+    
     int gridCols = Constants::WIDTH / Constants::GRID_SIZE;
     int gridRows = Constants::HEIGHT / Constants::GRID_SIZE;
     headShape.setPosition(Constants::GRID_SIZE * (gridCols / 2), 

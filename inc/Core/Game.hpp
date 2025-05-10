@@ -14,6 +14,7 @@ class Game{
         TextManager snakePosText;
 
         int score;
+        float accumulatedTime;
 
         // Entity
         Food food;
