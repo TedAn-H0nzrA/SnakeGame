@@ -26,10 +26,9 @@ Snake::Snake(const Snake& other): segmentSize(other.segmentSize),
                                     dirHorizontal(other.dirHorizontal),
                                     dirVertical(other.dirVertical),
                                     velocity(other.velocity),
-                                    bodyShape(other.bodyShape)
-{
-    headShape = other.headShape;
-}
+                                    bodyShape(other.bodyShape),
+                                    headShape(other.headShape)
+{}
 
 void Snake::updateVelocity() {
     switch (currentDirection) {
@@ -64,7 +63,7 @@ void Snake::move() {
     if (!isCollied){
         // Movement de chaque segment du serpent
         if (!bodyShape.empty()) {
-            for (size_t i = bodyShape.size() - 1; i > 0; i--) {
+            for (size_t i = bodyShape.size(); i-- > 1;) {
                 bodyShape[i].setPosition(bodyShape[i - 1].getPosition());
             }
             bodyShape[0].setPosition(headShape.getPosition());
@@ -129,8 +128,17 @@ bool Snake::getIsCollied() const {
     return isCollied;
 }
 
-sf::FloatRect Snake::getGlobalBounds() const {
+sf::FloatRect Snake::getGlobalBoundsHead() const {
     return headShape.getGlobalBounds();
+}
+
+std::vector<sf::FloatRect> Snake::getGlobalBoundsBody() const {
+    std::vector<sf::FloatRect> bounds;
+    for (auto&& segment : bodyShape) {
+        bounds.push_back(segment.getGlobalBounds());
+    }
+
+    return bounds;
 }
 
 void Snake::reset() {

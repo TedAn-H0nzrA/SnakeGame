@@ -44,7 +44,8 @@ class Snake{
         void reset();
 
         sf::Vector2f getPosition() const;
-        sf::FloatRect getGlobalBounds() const;
+        sf::FloatRect getGlobalBoundsHead() const;
+        std::vector<sf::FloatRect> getGlobalBoundsBody() const;
         Direction getDirection() const;
 
         void draw(sf::RenderWindow& window);

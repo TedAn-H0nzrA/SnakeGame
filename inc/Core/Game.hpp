@@ -27,10 +27,20 @@ class Game{
         bool isGameOver;
         bool isUser;
 
+        // Intilialisation random
+        std::random_device rd;
+        std::mt19937 gen;
+        int maxGridX;
+        int maxGridY;
+        std::uniform_int_distribution<int> distX;
+        std::uniform_int_distribution<int> distY;
+
         // Ai
         BruteForce ai_bruteForce;
         int searchDepth;
         bool isAI_BF;
+
+        void generateNewFoddPosition();
 
     public: 
         Game();

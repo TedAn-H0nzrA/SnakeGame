@@ -13,12 +13,19 @@ Game::Game(): snakeCollied(false),
                 accumulatedTime(0),
                 snake(std::make_shared<Snake>()),
                 food(std::make_shared<Food>()),
-                searchDepth(3),
+                searchDepth(20),
                 ai_bruteForce(snake, food, searchDepth),
                 isAI_BF(false)
 {
     window.create(sf::VideoMode(Constants::WIDTH, Constants::HEIGHT), Constants::TITLE, sf::Style::Default);
     window.setFramerateLimit(Constants::FPS);
+
+    // Initialisation des random
+    gen.seed(rd());
+    maxGridX = Constants::WIDTH / Constants::GRID_SIZE - 1;
+    maxGridY = Constants::HEIGHT / Constants::GRID_SIZE - 1;
+    distX = std::uniform_int_distribution<int>(Constants::F_radius, maxGridX - Constants::F_radius);
+    distY = std::uniform_int_distribution<int>(Constants::F_radius, maxGridY - Constants::F_radius);
 
     gameOverText.setString(Constants::gameOverText);
     gameOverText.setPosition(Constants::WIDTH / 2, Constants::HEIGHT / 2);
@@ -27,6 +34,8 @@ Game::Game(): snakeCollied(false),
 
     snakePosText.setString(Constants::snakePosInfo);
     snakePosText.setPosition(Constants::WIDTH / 2, Constants::HEIGHT - 10);
+
+    generateNewFoddPosition();
 }
 
 void Game::runBruteForce() {
@@ -74,6 +83,32 @@ void Game::manageEvent(sf::Event& event) {
     }
 }
 
+void Game::generateNewFoddPosition() {
+    while (true) {
+        int gridX = distX(gen);
+        int gridY = distY(gen);
+    
+        auto newPosX = gridX * Constants::GRID_SIZE + Constants::GRID_SIZE / 2;
+        auto newPosY = gridY * Constants::GRID_SIZE + Constants::GRID_SIZE / 2;
+        
+        food->setPosition(newPosX, newPosY);
+        auto snakeBoundsHead = snake->getGlobalBoundsHead();
+
+        // Détection de collision entre serptent et food pour placer food dans les positions qui ne sont pas prise par snake
+        if (food->checkCollision(snakeBoundsHead)) continue;
+
+        bool colliedWithBody = false;
+        for (auto&& segmentBound : snake->getGlobalBoundsBody()) {
+            if (food->checkCollision(segmentBound)) {
+                colliedWithBody = true;
+                break;
+            }
+        }
+
+        if (!colliedWithBody) break;
+    }
+}
+
 void Game::reset() {
     score = 0;
     isGameOver = false;
@@ -83,6 +118,7 @@ void Game::reset() {
     // Nouvelle instance
     snake = std::make_shared<Snake>();
     food = std::make_shared<Food>();
+    generateNewFoddPosition();
 
     ai_bruteForce = BruteForce(snake, food, searchDepth);
 
@@ -127,11 +163,13 @@ void Game::update() {
 
     // Gestion des collisions
     // Food et Snake
-    auto snakeBounds = snake->getGlobalBounds();
+    auto snakeBounds = snake->getGlobalBoundsHead();
     if (food->checkCollision(snakeBounds)) {
         snake->grow();
         score++;
         scoreText.setString(Constants::scoreText + std::to_string(score));
+
+        generateNewFoddPosition();
     }
 
     // Snake position

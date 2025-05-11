@@ -12,7 +12,8 @@ class BruteForce{
 
         // Evaluation and Algo
         sf::Vector2f simulateMove(Direction dir);
-        int evaluateState(const Snake& simulatedSnake);
+        float evaluateState(std::shared_ptr<Snake> simulatedSnake, int depth);
+        std::vector<Direction> directions;
 
     public:
         BruteForce(std::shared_ptr<Snake> snake, std::shared_ptr<Food> food, int depthSearch);
