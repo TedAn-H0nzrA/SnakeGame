@@ -13,7 +13,7 @@ Game::Game(): snakeCollied(false),
                 accumulatedTime(0),
                 snake(std::make_shared<Snake>()),
                 food(std::make_shared<Food>()),
-                searchDepth(20),
+                searchDepth(4),
                 ai_bruteForce(snake, food, searchDepth),
                 isAI_BF(false)
 {
@@ -155,6 +155,7 @@ void Game::update() {
     
     if (accumulatedTime >= moveInterval) {
         if (isAI_BF) {
+            ai_bruteForce = BruteForce(snake, food, searchDepth);
             runBruteForce();
         }
         snake->move();

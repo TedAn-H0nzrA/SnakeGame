@@ -27,9 +27,13 @@ sf::Vector2f BruteForce::simulateMove(Direction dir) {
 }
 
 float BruteForce::evaluateState(std::shared_ptr<Snake> simulatedSnake, int depth) {
-    if (depth < 0) return -std::numeric_limits<float>::infinity();
+    // if (depth < 0) return -std::numeric_limits<float>::infinity();
 
-    if (depth == 0 || simulatedSnake->getIsCollied()) {
+    if (simulatedSnake->getIsCollied()) {
+        return -std::numeric_limits<float>::infinity();
+    }
+
+    if (depth <= 0) {
             sf::Vector2f head = simulatedSnake->getPosition();
             sf::Vector2f target_food = food->getPosition();
 
@@ -37,19 +41,24 @@ float BruteForce::evaluateState(std::shared_ptr<Snake> simulatedSnake, int depth
             float dx = head.x - target_food.x;
             float dy = head.y - target_food.y;
 
-            return -std::sqrt(std::pow(dx, 2) + std::pow(dy, 2));
+            return -std::sqrt(dx * dx + dy * dy);
     };
 
     float bestScore = -std::numeric_limits<float>::infinity();
+    std::cout << "[Depth " << depth << "] Evaluating positions..." << std::endl;
 
     for (auto&& dir : directions) {
         auto nextSim = std::make_shared<Snake>(*simulatedSnake);
         nextSim->setDirection(dir);
         nextSim->move();
 
+        if (nextSim->getIsCollied()) continue;
+
         float score = evaluateState(nextSim, depth - 1);
         bestScore = std::max(score, bestScore);
-        std::cout << "Testing dir: " << static_cast<int>(dir) << " at depth: " << depth << "\n";
+        std::cout   << "Testing dir: " << static_cast<int>(dir)
+                    << " at depth: " << depth
+                    << " | Score: " << score << std::endl;
     }
 
     return bestScore;
@@ -61,7 +70,7 @@ Direction BruteForce::findBestMove() {
     Direction bestDirection = snake->getDirection();
 
     // Algorithme BruteForce
-    for (auto&& dir : directions) {;
+    for (auto&& dir : directions) {
         auto simulatedSnake = std::make_shared<Snake>(*snake); 
         simulatedSnake->setDirection(dir);
         simulatedSnake->move();
